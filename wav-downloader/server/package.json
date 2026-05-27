@@ -1,0 +1,18 @@
+{
+  "name": "beatpad-server",
+  "version": "2.0.0",
+  "description": "BeatPad Express API server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "dependencies": {
+    "archiver": "^6.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.6.5",
+    "uuid": "^9.0.0"
+  }
+}

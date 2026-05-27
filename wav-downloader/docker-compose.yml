@@ -1,0 +1,71 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: beatpad-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: beatpad_root_password
+      MYSQL_DATABASE: beatpad
+      MYSQL_USER: beatpad_user
+      MYSQL_PASSWORD: beatpad_password
+    volumes:
+      - beatpad_mysql_data:/var/lib/mysql
+      - ./database/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pbeatpad_root_password"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+    networks:
+      - beatpad-net
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: beatpad-server
+    ports:
+      - "5050:5050"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      PORT: 5050
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: beatpad_user
+      DB_PASSWORD: beatpad_password
+      DB_NAME: beatpad
+      DOWNLOADS_DIR: /downloads
+      UPLOADS_DIR: /uploads
+      EXPORTS_DIR: /exports
+      NODE_ENV: development
+    volumes:
+      - ./downloads:/downloads
+      - ./uploads:/uploads
+      - ./exports:/exports
+    networks:
+      - beatpad-net
+    restart: on-failure
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: beatpad-client
+    ports:
+      - "5173:5173"
+    depends_on:
+      - server
+    environment:
+      # Used by vite.config.js (Node process) to know where to proxy /api
+      VITE_API_TARGET: http://server:5050
+    networks:
+      - beatpad-net
+
+volumes:
+  beatpad_mysql_data:
+
+networks:
+  beatpad-net:
+    driver: bridge

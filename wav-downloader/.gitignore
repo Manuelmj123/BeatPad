@@ -1,0 +1,131 @@
+# ══════════════════════════════════════════════════════════════
+#  BeatPad — .gitignore
+#  Keep: source code, schemas, docker config, .gitkeep stubs.
+#  Exclude: user data, secrets, build output, local tooling.
+# ══════════════════════════════════════════════════════════════
+
+# ── Dependencies ──────────────────────────────────────────────
+node_modules/
+.npm/
+.pnp
+.pnp.js
+
+# ── Build output ──────────────────────────────────────────────
+client/dist/
+client/build/
+dist/
+build/
+
+# ── Environment / secrets ─────────────────────────────────────
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env.*.local
+*.pem
+*.key
+*.crt
+*.p12
+
+# ── Database files ────────────────────────────────────────────
+# (database/init/*.sql schema files ARE committed — only data files are excluded)
+*.db
+*.sqlite
+*.sqlite3
+data/
+
+# ── Logs ─────────────────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ── User data directories ─────────────────────────────────────
+# Each folder keeps a .gitkeep so the directory exists after a fresh clone.
+# The app creates these at runtime; no user files should ever be committed.
+
+# Beat audio files downloaded by yt-dlp
+downloads/*
+!downloads/.gitkeep
+
+# User-uploaded files (completed songs, cover art)
+uploads/*
+!uploads/.gitkeep
+
+# Packaged ZIP exports
+exports/*
+!exports/.gitkeep
+
+# ── Audio / video / archive files ────────────────────────────
+# Belt-and-suspenders: catches any media that lands outside the
+# data directories above (large binaries have no place in git).
+*.wav
+*.mp3
+*.flac
+*.aac
+*.ogg
+*.m4a
+*.opus
+*.mp4
+*.mkv
+*.webm
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# ── OS artifacts ──────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# ── IDE / editor ──────────────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# ── Vite / tooling cache ──────────────────────────────────────
+.vite/
+.cache/
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+
+# ── Docker runtime data ───────────────────────────────────────
+.docker-volumes/
+
+# ── Python artefacts (if yt-dlp or ffmpeg are vendored) ───────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist-info/
+
+# ── Miscellaneous ─────────────────────────────────────────────
+*.bak
+*.tmp
+*.orig
+.history/
+coverage/
+.nyc_output/
